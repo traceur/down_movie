@@ -15,12 +15,12 @@ from os.path import basename
 from urlparse import urlsplit
 
 def find():#the python spider
-    page = urllib2.urlopen("http://www.qiaoy.net/movie/movie.php").read()#find the movie's name
+    page = urllib2.urlopen("http://Yousite/movie.php").read()#find the movie's name
     print 'find() running'
     print dict(page)
     if not dict(page):
-        if urllib2.urlopen("http://www.qiaoy.net/movie/movie_choice.php").read() != 'Have Downloaded':
-            post_movie('http://www.qiaoy.net/movie/movie_choice.php','Have Downloaded@@@0')
+        if urllib2.urlopen("http://Yousite/movie_choice.php").read() != 'Have Downloaded':
+            post_movie('http://Yousite/movie_choice.php','Have Downloaded@@@0')
         print 'movie has download'
         sites = 0
     else:
@@ -65,8 +65,8 @@ def url2name(url):
 
 def download(url, localFileName = None):#download the file
     print 'downloading......'
-    post_movie('http://www.qiaoy.net/movie/movie_state.php','downloading....')
-    post_movie('http://www.qiaoy.net/movie/movie_choice.php','')
+    post_movie('http://Yousite/movie_state.php','downloading....')
+    post_movie('http://Yousite/movie_choice.php','')
     localName = url2name(url)
     req = urllib2.Request(url)
     r = urllib2.urlopen(req)
@@ -81,12 +81,12 @@ def download(url, localFileName = None):#download the file
     f = open(localName, 'wb')
     f.write(r.read())
     f.close()
-    post_movie('http://www.qiaoy.net/movie/movie_state.php','success!')
+    post_movie('http://Yousite/movie_state.php','success!')
     return 'ok'
 
 def get_movie():#get the android's choice
     print 'get_movie() running'
-    page = urllib2.urlopen("http://www.qiaoy.net/movie/down.php").read()
+    page = urllib2.urlopen("http://Yousite/down.php").read()
     print page
     return page
 
@@ -142,7 +142,7 @@ if __name__ == '__main__':
         sites = find()
         if sites :
             if sites == 'Google is closed ! Y could find after a while@@@0':
-                post_moive('http://www.qiaoy.net/movie/movie_choice.php',sites)
+                post_moive('http://Yousite/movie_choice.php',sites)
             else:
                 movie_message = {}
                 for site in sites:
@@ -150,7 +150,7 @@ if __name__ == '__main__':
                     if site not in movie_message:
                         movie_message[title]=site #get messages for the movie to put it to PHP
                 message = urllib.urlencode(movie_message)
-                post_movie('http://www.qiaoy.net/movie/movie_choice.php',message)
+                post_movie('http://Yousite/movie_choice.php',message)
                 while get_movie():#get the 115.com's site
                     real_url = down_115(get_movie())
                     down_result = download(real_url)
